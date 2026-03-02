@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Recommendation</title>
+
+    <style>
+        :root {
+            --pri: #6A5ACD;
+            --pri-dark: #4d3fb7;
+            --accent: #8f78ff;
+            --glow: rgba(160, 130, 255, .55);
+        }
+
+        body {
+            background: #0f0f16;
+            font-family: Poppins, sans-serif;
+            color: white;
+            margin: 0;
+            text-align: center;
+            padding-top: 35px;
+        }
+
+        h2 {
+            color: #c184ff;
+            font-size: 30px;
+            font-weight: 700;
+            text-shadow: 0 0 12px rgba(193, 132, 255, .4);
+        }
+
+        .card {
+            background: #1a1a26;
+            width: 90%;
+            max-width: 450px;
+            margin: 25px auto;
+            padding: 25px;
+            border-radius: 14px;
+            border: 1px solid #2d2a3b;
+            box-shadow: 0 0 15px rgba(150, 120, 255, .2);
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            background: #43437e;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        button {
+            width: 100%;
+            font-weight: 700;
+            background: #c184ff;
+            border-radius: 8px;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #d6a6ff;
+        }
+
+        .list {
+            width: 90%;
+            max-width: 450px;
+            margin: auto;
+            background: #33335e;
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid #302d44;
+            box-shadow: 0 0 15px rgba(160, 120, 255, .2)
+        }
+
+        .plan {
+            background: #26263a;
+            margin: 6px 0;
+            padding: 10px;
+            border-radius: 6px;
+            color: #dab7ff;
+            font-weight: 600;
+        }
+
+        /* FIXED – Final Style Matching Theme 🔥 */
+        .nav-btn {
+            position: fixed;
+            bottom: 20px;
+            padding: 10px 26px;
+            font-weight: 700;
+            border-radius: 10px;
+            font-size: 15px;
+            color: white;
+            border: none;
+            background: var(--pri);
+            box-shadow: 0 0 15px var(--glow);
+            transition: 0.25s;
+            z-index: 9999;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background: var(--pri-dark);
+            transform: scale(1.1);
+        }
+
+        #backBtn {
+            left: 20px;
+        }
+
+        #homeBtn {
+            right: 20px;
+            background: #8f78ff;
+        }
+
+        #homeBtn:hover {
+            background: #b79cff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>🏋 Workout Recommendation</h2>
+    <p style="color:#bfb9d7">Select your goal & get a weekly routine</p>
+
+    <form method="POST" class="card">
+        <select name="goal" required>
+            <option value="fat_loss">🔥 Fat Loss</option>
+            <option value="muscle_gain">💪 Muscle Gain</option>
+            <option value="strength">🏋 Strength Training</option>
+            <option value="beginner">🟢 Beginner Routine</option>
+            <option value="home">🏠 Home Workout</option>
+        </select>
+        <button>Generate Plan 🚀</button>
+    </form>
+
+    {% if plan %}
+    <div class="list">
+        <h3 style="color:#c184ff;">🔥 Your Workout Plan</h3>
+        {% for p in plan %}
+        <div class="plan">{{p}}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- THEME-MATCHED BUTTONS -->
+    <a href="javascript:history.back()" id="backBtn" class="nav-btn">⬅ Back</a>
+    <a href="/" id="homeBtn" class="nav-btn">🏠 Home</a>
+
+</body>
+
+</html>

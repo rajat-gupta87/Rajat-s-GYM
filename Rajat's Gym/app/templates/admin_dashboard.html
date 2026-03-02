@@ -1,0 +1,307 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — SmartGym{% endblock %}
+
+{% block extra_css %}
+<style>
+    .adm-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 22px;
+        box-shadow: 0 2px 18px rgba(0, 0, 0, .06);
+        border: 1px solid rgba(0, 0, 0, .06);
+    }
+
+    .adm-head {
+        font-size: .72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .7px;
+        margin-bottom: 14px;
+    }
+
+    .stat-box {
+        border-radius: 14px;
+        padding: 20px;
+        color: #fff;
+        text-align: center;
+    }
+
+    .stat-box .sb-num {
+        font-size: 2.2rem;
+        font-weight: 900;
+        line-height: 1;
+    }
+
+    .stat-box .sb-lbl {
+        font-size: .76rem;
+        opacity: .8;
+        margin-top: 4px;
+    }
+
+    .sb-purple {
+        background: linear-gradient(135deg, #6A5ACD, #3b1c78);
+        box-shadow: 0 4px 18px rgba(106, 90, 205, .3);
+    }
+
+    .sb-green {
+        background: linear-gradient(135deg, #27ae60, #1e8449);
+        box-shadow: 0 4px 18px rgba(39, 174, 96, .3);
+    }
+
+    .sb-orange {
+        background: linear-gradient(135deg, #f7971e, #ffd200);
+        box-shadow: 0 4px 18px rgba(247, 151, 30, .3);
+        color: #333;
+    }
+
+    .t-head th {
+        font-size: .72rem;
+        text-transform: uppercase;
+        color: #6A5ACD;
+        font-weight: 800;
+        letter-spacing: .4px;
+        border-bottom: 2px solid #f0eeff !important;
+    }
+
+    .t-head th,
+    .t-body td {
+        padding: 10px 12px !important;
+        font-size: .83rem;
+        vertical-align: middle;
+    }
+
+    .badge-on {
+        background: #d4f5e2;
+        color: #0e6b3a;
+        border-radius: 8px;
+        padding: 3px 10px;
+        font-size: .75rem;
+        font-weight: 700;
+    }
+
+    .badge-off {
+        background: #f0f0f0;
+        color: #666;
+        border-radius: 8px;
+        padding: 3px 10px;
+        font-size: .75rem;
+        font-weight: 700;
+    }
+
+    .badge-act {
+        background: #d4edda;
+        color: #155724;
+        border-radius: 8px;
+        padding: 3px 10px;
+        font-size: .75rem;
+        font-weight: 700;
+    }
+
+    .badge-end {
+        background: #f8d7da;
+        color: #721c24;
+        border-radius: 8px;
+        padding: 3px 10px;
+        font-size: .75rem;
+        font-weight: 700;
+    }
+
+    .badge-yes {
+        background: #d4f5e2;
+        color: #0e6b3a;
+        border-radius: 8px;
+        padding: 3px 8px;
+        font-size: .72rem;
+        font-weight: 700;
+    }
+
+    .badge-no {
+        background: #fde8e8;
+        color: #8b1f1f;
+        border-radius: 8px;
+        padding: 3px 8px;
+        font-size: .72rem;
+        font-weight: 700;
+    }
+
+    .sec-title {
+        font-size: .88rem;
+        font-weight: 800;
+        color: #1a1a2e;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #f0eeff;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ── Page Header ── -->
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <div>
+        <h4 class="mb-0 fw-800" style="font-weight:800;color:#1a1a2e;">🛡️ Admin Dashboard</h4>
+        <p class="text-muted mb-0" style="font-size:.84rem;">Real-time gym monitoring & analytics</p>
+    </div>
+    <a href="{{ url_for('admin_logout') }}" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+        <i class="bi bi-box-arrow-right me-1"></i>Logout
+    </a>
+</div>
+
+<!-- ── Stat Cards ── -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-4">
+        <div class="stat-box sb-purple">
+            <div class="sb-num">{{ total_users }}</div>
+            <div class="sb-lbl">👥 Total Members</div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="stat-box sb-green">
+            <div class="sb-num">{{ active_users }}</div>
+            <div class="sb-lbl">🟢 Active Now</div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="stat-box sb-orange">
+            <div class="sb-num">{{ recent_logs|length }}</div>
+            <div class="sb-lbl">📋 Recent Logs</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+
+    <!-- ── Members Table ── -->
+    <div class="col-xl-6">
+        <div class="adm-card">
+            <div class="sec-title"><i class="bi bi-people-fill text-pri"></i> All Members</div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="t-head">
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Goal</th>
+                            <th>BMI</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="t-body">
+                        {% for item in users_with_status %}
+                        <tr>
+                            <td><strong>{{ item.user.name }}</strong></td>
+                            <td style="color:#666;font-size:.78rem;">{{ item.user.email }}</td>
+                            <td>{{ (item.user.goal or '—').replace('_',' ').title() }}</td>
+                            <td>{{ item.user.bmi or '—' }}</td>
+                            <td>
+                                {% if item.is_online %}
+                                <span class="badge-on"><i class="bi bi-circle-fill me-1"
+                                        style="font-size:.5rem;"></i>Online</span>
+                                {% else %}
+                                <span class="badge-off">Offline</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">No members registered yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Login History ── -->
+    <div class="col-xl-6">
+        <div class="adm-card">
+            <div class="sec-title"><i class="bi bi-shield-lock text-pri"></i> Login History</div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="t-head">
+                        <tr>
+                            <th>User</th>
+                            <th>Login</th>
+                            <th>Logout</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="t-body">
+                        {% for la in login_history %}
+                        <tr>
+                            <td><strong>{{ la['user_name'] }}</strong></td>
+                            <td style="white-space:nowrap;font-size:.78rem;color:#555;">
+                                {{ la['login_time'][:16] if la['login_time'] else '—' }}
+                            </td>
+                            <td style="white-space:nowrap;font-size:.78rem;color:#555;">
+                                {{ la['logout_time'][:16] if la['logout_time'] else '—' }}
+                            </td>
+                            <td>
+                                {% if la['is_active'] %}
+                                <span class="badge-act">🟢 Active</span>
+                                {% else %}
+                                <span class="badge-end">Ended</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-4">No login history yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Workout Logs ── -->
+    <div class="col-12">
+        <div class="adm-card">
+            <div class="sec-title"><i class="bi bi-journal-richtext text-pri"></i> Recent Workout Logs</div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="t-head">
+                        <tr>
+                            <th>Member</th>
+                            <th>Date</th>
+                            <th>Workout</th>
+                            <th>Notes</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="t-body">
+                        {% for log in recent_logs %}
+                        <tr>
+                            <td><strong>{{ log['user_name'] }}</strong></td>
+                            <td style="white-space:nowrap;">{{ log['date'] }}</td>
+                            <td>{{ log['workout_type'] or '—' }}</td>
+                            <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                                {{ log['notes'] or '—' }}
+                            </td>
+                            <td>
+                                {% if log['completed'] %}
+                                <span class="badge-yes">✅ Done</span>
+                                {% else %}
+                                <span class="badge-no">❌ Missed</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">No workout logs yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

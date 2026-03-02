@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Planner 🧠</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --pri: #6A5ACD;
+            --pri-dark: #4d3fb7;
+            --glow: rgba(150, 120, 255, .55);
+        }
+
+        body {
+            background: #0c071c;
+            font-family: Poppins, sans-serif;
+            text-align: center;
+            color: white;
+            padding-top: 45px;
+        }
+
+        h2 {
+            font-weight: 800;
+            color: #d5b6ff;
+        }
+
+        .glass-card {
+            max-width: 470px;
+            margin: auto;
+            padding: 25px;
+            background: rgba(255, 255, 255, .07);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(150, 120, 255, .25);
+        }
+
+        .btn-glow {
+            background: #9d6cff;
+            color: white;
+            font-weight: 700;
+            border-radius: 8px;
+            box-shadow: 0 0 14px var(--glow);
+            transition: .3s;
+        }
+
+        .btn-glow:hover {
+            transform: scale(1.05);
+            background: #b88aff;
+        }
+
+        .result-box {
+            max-width: 470px;
+            margin: auto;
+            background: rgba(255, 255, 255, .08);
+            padding: 18px;
+            border-radius: 14px;
+            box-shadow: 0 0 22px rgba(195, 135, 255, .28);
+        }
+
+        li {
+            background: #241336 !important;
+            border: none !important;
+            color: #f5cfff !important;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        /* 🔥 THEME MATCH BACK + HOME BUTTONS */
+        .nav-btn {
+            position: fixed;
+            bottom: 20px;
+            padding: 10px 22px;
+            font-weight: 700;
+            font-size: 15px;
+            border-radius: 10px;
+            background: var(--pri);
+            color: white;
+            border: none;
+            z-index: 999;
+            box-shadow: 0 0 15px var(--glow);
+            transition: .25s;
+        }
+
+        .nav-btn:hover {
+            background: var(--pri-dark);
+            transform: scale(1.1);
+        }
+
+        #backBtn {
+            left: 20px;
+        }
+
+        #homeBtn {
+            right: 20px;
+            background: #8d6aff;
+        }
+
+        #homeBtn:hover {
+            background: #a58aff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Fitness Planner 🧠</h2>
+    <p class="text-light">Enter details → calories, protein, BMI, score 📊</p>
+    <hr style="width:70%;margin:auto;opacity:.3">
+
+    <form method="POST" class="glass-card mt-4">
+        <input name="weight" placeholder="Weight (kg)" class="form-control mb-3" required>
+        <input name="height" placeholder="Height (cm)" class="form-control mb-3" required>
+        <button class="btn-glow w-100 py-2">Analyze ⚡</button>
+    </form>
+
+    {% if info %}
+    <br>
+    <div class="result-box">
+        <h3 class="text-warning fw-bold mb-2">Your Report 📌</h3>
+        <ul class="list-group text-start">
+            <li>📊 BMI → <b>{{info.bmi}}</b></li>
+            <li>⚠ Status → <b>{{info.status}}</b></li>
+            <li>🔥 Calories → <b>{{info.calories}}</b></li>
+            <li>🥚 Protein/day → <b>{{info.protein}}</b></li>
+            <li>💧 Water Intake → <b>{{info.water}}</b></li>
+        </ul>
+    </div>
+    {% endif %}
+
+    <!-- Matched Navigation Buttons -->
+    <button id="backBtn" onclick="history.back()" class="nav-btn">⬅ Back</button>
+    <a id="homeBtn" href="/" class="nav-btn">🏠 Home</a>
+
+</body>
+
+</html>

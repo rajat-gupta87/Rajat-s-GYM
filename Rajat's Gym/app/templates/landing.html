@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rajat's Gym — Unique Gym Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --pri: #6A5ACD;
+            --pri-d: #4d3fb7;
+            --acc: #ff9f43;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #08051a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* ── Top Nav ── */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+            background: rgba(8, 5, 26, .88);
+            backdrop-filter: blur(14px);
+            padding: 14px 5vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, .07);
+        }
+
+        .logo {
+            font-size: 1.35rem;
+            font-weight: 900;
+        }
+
+        .logo span {
+            color: var(--acc);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-admin {
+            background: rgba(255, 159, 67, .12);
+            border: 1.5px solid rgba(255, 159, 67, .45);
+            color: var(--acc);
+            border-radius: 999px;
+            padding: 6px 16px;
+            font-size: .82rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: .2s;
+        }
+
+        .btn-admin:hover {
+            background: var(--acc);
+            color: #1a1a1a;
+        }
+
+        .btn-login {
+            background: transparent;
+            border: 1.5px solid rgba(255, 255, 255, .3);
+            color: #fff;
+            border-radius: 999px;
+            padding: 7px 20px;
+            font-size: .85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: .2s;
+        }
+
+        .btn-login:hover {
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+        }
+
+        .btn-start {
+            background: var(--pri);
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 8px 24px;
+            font-size: .85rem;
+            font-weight: 700;
+            box-shadow: 0 0 24px rgba(106, 90, 205, .55);
+            text-decoration: none;
+            transition: .2s;
+        }
+
+        .btn-start:hover {
+            background: var(--pri-d);
+            color: #fff;
+            transform: scale(1.04);
+        }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            padding: 120px 5vw 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background:
+                radial-gradient(ellipse 60% 50% at 25% 40%, rgba(106, 90, 205, .35) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 60% at 80% 70%, rgba(59, 28, 120, .4) 0%, transparent 70%),
+                #08051a;
+        }
+
+        .hero-inner {
+            max-width: 780px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 159, 67, .15);
+            border: 1px solid rgba(255, 159, 67, .4);
+            color: var(--acc);
+            border-radius: 999px;
+            padding: 6px 18px;
+            font-size: .8rem;
+            font-weight: 700;
+            margin-bottom: 22px;
+            letter-spacing: .5px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 7vw, 5rem);
+            font-weight: 900;
+            line-height: 1.08;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 .hi {
+            color: var(--acc);
+        }
+
+        .hero p {
+            font-size: clamp(.95rem, 2vw, 1.2rem);
+            color: rgba(255, 255, 255, .6);
+            max-width: 600px;
+            margin: 0 auto 36px;
+            line-height: 1.7;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-btn-main {
+            background: var(--pri);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 15px 36px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            box-shadow: 0 0 40px rgba(106, 90, 205, .55);
+            text-decoration: none;
+            transition: .25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-btn-main:hover {
+            background: var(--pri-d);
+            color: #fff;
+            transform: translateY(-3px);
+        }
+
+        .hero-btn-out {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, .25);
+            border-radius: 12px;
+            padding: 14px 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: .25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-btn-out:hover {
+            border-color: rgba(255, 255, 255, .6);
+            color: #fff;
+        }
+
+        .hero-note {
+            margin-top: 18px;
+            color: rgba(255, 255, 255, .35);
+            font-size: .78rem;
+        }
+
+        /* ── Stats strip ── */
+        .stats-strip {
+            background: rgba(255, 255, 255, .04);
+            border-top: 1px solid rgba(255, 255, 255, .06);
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+            padding: 24px 5vw;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item .num {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--acc);
+        }
+
+        .stat-item .lbl {
+            font-size: .78rem;
+            color: rgba(255, 255, 255, .5);
+            margin-top: 2px;
+        }
+
+        /* ── Features ── */
+        .features {
+            padding: 90px 5vw;
+            background: #0d0820;
+        }
+
+        .section-label {
+            display: inline-block;
+            background: rgba(106, 90, 205, .2);
+            border: 1px solid rgba(106, 90, 205, .4);
+            color: #d7b7ff;
+            border-radius: 999px;
+            padding: 5px 16px;
+            font-size: .78rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            letter-spacing: .5px;
+        }
+
+        .section-title {
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .section-sub {
+            color: rgba(255, 255, 255, .5);
+            font-size: .95rem;
+        }
+
+        .feat-card {
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .07);
+            border-radius: 18px;
+            padding: 28px 22px;
+            height: 100%;
+            transition: .3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feat-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            background: linear-gradient(135deg, rgba(106, 90, 205, .12), transparent);
+            transition: opacity .3s;
+        }
+
+        .feat-card:hover::before {
+            opacity: 1;
+        }
+
+        .feat-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(106, 90, 205, .4);
+        }
+
+        .feat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--pri), var(--pri-d));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 18px rgba(106, 90, 205, .4);
+        }
+
+        .feat-card h5 {
+            font-weight: 800;
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+        }
+
+        .feat-card p {
+            color: rgba(255, 255, 255, .5);
+            font-size: .87rem;
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        /* ── How It Works ── */
+        .how {
+            padding: 90px 5vw;
+        }
+
+        .step-wrap {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+        }
+
+        .step-num {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--pri), #9b6cf0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 900;
+            flex-shrink: 0;
+            box-shadow: 0 4px 14px rgba(106, 90, 205, .4);
+        }
+
+        .step-wrap h6 {
+            font-weight: 800;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .step-wrap p {
+            color: rgba(255, 255, 255, .5);
+            font-size: .85rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* ── CTA ── */
+        .cta-sec {
+            padding: 90px 5vw;
+            text-align: center;
+            background: linear-gradient(135deg, #1a0a3b 0%, #3b1c78 100%);
+        }
+
+        .cta-sec h2 {
+            font-size: clamp(1.7rem, 4vw, 2.8rem);
+            font-weight: 900;
+            margin-bottom: 14px;
+        }
+
+        .cta-sec p {
+            color: rgba(255, 255, 255, .6);
+            font-size: 1rem;
+            margin-bottom: 32px;
+        }
+
+        /* ── Footer ── */
+        footer {
+            background: #060412;
+            padding: 28px 5vw;
+            text-align: center;
+            color: rgba(255, 255, 255, .25);
+            font-size: .82rem;
+            border-top: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        footer a {
+            color: rgba(255, 255, 255, .4);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--acc);
+        }
+
+        /* Mobile */
+        @media(max-width:576px) {
+            .stats-strip {
+                gap: 24px;
+            }
+
+            .top-nav {
+                padding: 12px 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── Top Nav ── -->
+    <nav class="top-nav">
+        <div class="logo">🏋️ Smart<span>Gym</span></div>
+        <div class="nav-links">
+            <a href="/admin/login" class="btn-admin"><i class="bi bi-shield-lock"></i> Admin</a>
+            <a href="/login" class="btn-login">Login</a>
+            <a href="/register" class="btn-start">Get Started →</a>
+        </div>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-badge">✨ AI-Powered Gym Management</div>
+            <h1>Train Smarter.<br>Track Better.<br><span class="hi">Get Results.</span></h1>
+            <p>
+                An intelligent gym SaaS that generates personalized workout plans,
+                tracks your progress with a visual calendar, and gives you an
+                AI voice coach — all in one platform.
+            </p>
+            <div class="hero-btns">
+                <a href="/register" class="hero-btn-main">
+                    <i class="bi bi-rocket-takeoff"></i> Start for Free
+                </a>
+                <a href="/login" class="hero-btn-out">
+                    <i class="bi bi-box-arrow-in-right"></i> Login
+                </a>
+            </div>
+            <p class="hero-note">No credit card required · Free forever for individuals</p>
+        </div>
+    </section>
+
+    <!-- ── Stats ── -->
+    <div class="stats-strip">
+        <div class="stat-item">
+            <div class="num">9+</div>
+            <div class="lbl">Workout Plans</div>
+        </div>
+        <div class="stat-item">
+            <div class="num">3</div>
+            <div class="lbl">Fitness Goals</div>
+        </div>
+        <div class="stat-item">
+            <div class="num">🎤</div>
+            <div class="lbl">Voice Coaching</div>
+        </div>
+        <div class="stat-item">
+            <div class="num">EN/HI</div>
+            <div class="lbl">Bilingual AI</div>
+        </div>
+        <div class="stat-item">
+            <div class="num">📊</div>
+            <div class="lbl">Admin Analytics</div>
+        </div>
+    </div>
+
+    <!-- ── Features ── -->
+    <section class="features">
+        <div class="container-xl">
+            <div class="text-center mb-5">
+                <div class="section-label">FEATURES</div>
+                <h2 class="section-title">Everything you need to crush your goals</h2>
+                <p class="section-sub">From personalized plans to live admin monitoring — it's all here.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4 col-sm-6">
+                    <div class="feat-card">
+                        <div class="feat-icon">🧠</div>
+                        <h5>AI Plan Generator</h5>
+                        <p>Auto-assigns a personalized weekly workout plan based on your goal, experience level, and
+                            schedule.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="feat-card">
+                        <div class="feat-icon">🎤</div>
+                        <h5>Voice AI Coach</h5>
+                        <p>Talk to your AI trainer hands-free in English or Hindi. Get workout advice, motivation, and
+                            plan details instantly.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="feat-card">
+                        <div class="feat-icon">📅</div>
+                        <h5>Workout Calendar</h5>
+                        <p>Visual clickable calendar. Log notes, mark workouts complete, and see your history at a
+                            glance.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="feat-card">
+                        <div class="feat-icon">📊</div>
+                        <h5>Admin Dashboard</h5>
+                        <p>Full gym monitoring panel — see active users, login timestamps, workout logs, and member
+                            stats in real time.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="feat-card">
+                        <div class="feat-icon">📈</div>
+                        <h5>Smart Dashboard</h5>
+                        <p>See yesterday's workout, today's plan, your streak, and BMI stats — all without switching
+                            tabs.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="feat-card">
+                        <div class="feat-icon">🔐</div>
+                        <h5>Role-Based Auth</h5>
+                        <p>Separate secure portals for users and admins with session tracking, hashed passwords, and
+                            login history.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── How It Works ── -->
+    <section class="how">
+        <div class="container-xl">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5">
+                    <div class="section-label">HOW IT WORKS</div>
+                    <h2 class="section-title" style="font-size:2.2rem;">Up and running in 4 steps</h2>
+                    <p style="color:rgba(255,255,255,.5);font-size:.92rem;margin-top:10px;">
+                        SmartGym gets you from zero to a full workout program in under 2 minutes.
+                    </p>
+                </div>
+                <div class="col-lg-7">
+                    <div class="d-flex flex-column gap-4">
+                        <div class="step-wrap">
+                            <div class="step-num">1</div>
+                            <div>
+                                <h6>Create Your Profile</h6>
+                                <p>Fill in age, height, weight, fitness goal, and experience level during signup.</p>
+                            </div>
+                        </div>
+                        <div class="step-wrap">
+                            <div class="step-num">2</div>
+                            <div>
+                                <h6>Get Your AI Workout Plan</h6>
+                                <p>SmartGym instantly assigns a personalized weekly plan and calculates your BMI.</p>
+                            </div>
+                        </div>
+                        <div class="step-wrap">
+                            <div class="step-num">3</div>
+                            <div>
+                                <h6>Train, Log, Track</h6>
+                                <p>Check your daily dashboard, log workouts on the calendar, and watch your streak grow.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step-wrap">
+                            <div class="step-num">4</div>
+                            <div>
+                                <h6>Talk to Your AI Coach</h6>
+                                <p>Use the voice assistant for hands-free coaching in English or Hindi during workouts.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── CTA ── -->
+    <section class="cta-sec">
+        <h2>Ready to transform your fitness journey?</h2>
+        <p>Join SmartGym today — completely free, powered by AI.</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="/register" class="hero-btn-main">
+                <i class="bi bi-person-plus"></i> Create Free Account
+            </a>
+            <a href="/admin/login" class="hero-btn-out">
+                <i class="bi bi-shield-check"></i> Admin Portal
+            </a>
+        </div>
+    </section>
+
+    <!-- ── Footer ── -->
+    <footer>
+        <p>
+            🏋️ <strong style="color:rgba(255,255,255,.5)">SmartGym</strong> —
+            Built with ❤️ by Rajat · Flask + PostgreSQL + Bootstrap 5 + Web Speech API
+        </p>
+        <p class="mt-1">
+            <a href="/login">User Login</a> ·
+            <a href="/register">Register</a> ·
+            <a href="/admin/login">Admin Login</a>
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

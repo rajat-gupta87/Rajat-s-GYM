@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Progress & Weight Tracker</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --pri: #6A5ACD;
+            --pri-dark: #4d3fb7;
+            --back: #0e091c;
+        }
+
+        body {
+            background: var(--back);
+            font-family: Poppins, sans-serif;
+            color: white;
+            text-align: center;
+            padding-top: 40px;
+        }
+
+        .card-box {
+            width: 55%;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 0 15px rgba(106, 90, 205, 0.55);
+        }
+
+        input {
+            background: #d3c1fa !important;
+            color: #cfc9ff;
+            border: 1px solid #6A5ACD;
+        }
+
+        .btn-purple {
+            background: var(--pri);
+            color: white;
+            font-weight: 700;
+            border: none;
+            box-shadow: 0 0 12px rgba(140, 120, 255, .45);
+        }
+
+        .btn-purple:hover {
+            background: var(--pri-dark);
+        }
+
+        canvas {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 18px;
+            border-radius: 18px;
+            margin-top: 30px;
+            width: 60%;
+            height: 220px !important;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 20px rgba(160, 120, 255, 0.35);
+        }
+
+        /* fixed navigation buttons */
+        .nav-btn {
+            position: fixed;
+            bottom: 20px;
+            padding: 10px 22px;
+            font-weight: bold;
+            border-radius: 8px;
+            background: var(--pri);
+            border: none;
+            color: white;
+            font-size: 15px;
+            z-index: 9999;
+            box-shadow: 0 0 10px rgba(140, 120, 255, .6);
+        }
+
+        #back {
+            left: 20px;
+        }
+
+        #home {
+            right: 20px;
+        }
+
+        .nav-btn:hover {
+            background: var(--pri-dark);
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 class="fw-bold" style="color:#b892ff">📊 Progress & Weight Tracking</h2>
+    <p class="text-light">Track fat loss + muscle gain journey — evolve weekly 🔥</p>
+    <hr style="width:70%;margin:auto;opacity:.25">
+
+    <!-- Weight input -->
+    <form method="POST" class="card-box mt-4">
+        <label class="fw-bold text-warning mb-2">Today’s Weight (kg)</label>
+        <input type="number" step="0.1" name="weight" class="form-control mb-3" required>
+        <button class="btn btn-purple w-100">Save Progress 🚀</button>
+    </form>
+
+    {% if progress %}
+    <h4 class="mt-4" style="color:#9df7ff;">📈 Overall Progress: <b>{{progress}}%</b></h4>
+    {% endif %}
+
+    {% if weights %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <canvas id="chart" height="120"></canvas>
+
+    <script>
+        let w = {{ weights | tojson}};
+        let d = {{ dates   | tojson}};
+
+        new Chart(document.getElementById("chart"), {
+            type: "line",
+            data: {
+                labels: d,
+                datasets: [{
+                    label: "Weight Trend (kg)",
+                    data: w,
+                    borderColor: "#c38bff",
+                    backgroundColor: "rgba(195,139,255,.25)",
+                    borderWidth: 3,
+                    tension: .35,
+                    pointRadius: 6,
+                    pointBackgroundColor: "#e7d7ff"
+                }]
+            },
+            options: {
+                plugins: { legend: { display: true, color: "white" } },
+                scales: {
+                    y: { beginAtZero: false, ticks: { color: "#fff" } },
+                    x: { ticks: { color: "#fff" } }
+                }
+            }
+        });
+    </script>
+
+    {% else %}
+    <p class="mt-4 text-secondary">No progress yet. Enter weight to start tracking 📥</p>
+    {% endif %}
+
+    <!-- Navigation Buttons -->
+    <button id="back" class="nav-btn" onclick="history.back()">⬅ Back</button>
+    <a id="home" href="/" class="nav-btn">🏠 Home</a>
+
+</body>
+
+</html>

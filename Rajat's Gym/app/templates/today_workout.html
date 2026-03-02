@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today's Workout</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --pri: #6A5ACD;
+            --pri-dark: #4d3fb7;
+            --bg: #0f0d18;
+        }
+
+        body {
+            background: var(--bg);
+            font-family: Poppins, sans-serif;
+            color: #fff;
+            text-align: center;
+            padding: 35px 15px 70px;
+        }
+
+        h2 {
+            color: #c792ff;
+            font-weight: 800;
+            text-shadow: 0 0 14px rgba(180, 130, 255, .4);
+        }
+
+        .today-card {
+            max-width: 520px;
+            margin: 25px auto;
+            padding: 25px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 22px rgba(140, 110, 255, 0.45);
+            text-align: left;
+        }
+
+        .badge-day {
+            background: #ffb648;
+            color: #221433;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 6px 16px;
+            font-size: 14px;
+        }
+
+        ul {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            color: #e5d9ff;
+            font-size: 15px;
+        }
+
+        .level-title {
+            font-size: 18px;
+            color: #dcb8ff;
+            margin-top: 18px;
+            font-weight: 700;
+        }
+
+        .week-box {
+            max-width: 650px;
+            margin: 25px auto 0;
+            background: #191628;
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 0 16px rgba(120, 100, 230, .35);
+        }
+
+        .week-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 14px;
+            color: #e8ddff;
+        }
+
+        .week-row:last-child {
+            border-bottom: none;
+        }
+
+        .highlight {
+            background: rgba(106, 90, 205, 0.18);
+            border-radius: 8px;
+        }
+
+        .nav-btn {
+            position: fixed;
+            bottom: 18px;
+            padding: 10px 24px;
+            font-weight: 700;
+            font-size: 15px;
+            border-radius: 10px;
+            border: none;
+            color: #fff;
+            background: var(--pri);
+            box-shadow: 0 0 15px rgba(140, 120, 255, 0.55);
+            text-decoration: none;
+            z-index: 9999;
+            transition: .25s;
+        }
+
+        .nav-btn:hover {
+            background: var(--pri-dark);
+            transform: scale(1.08);
+        }
+
+        #backBtn {
+            left: 20px;
+        }
+
+        #homeBtn {
+            right: 20px;
+            background: #8f78ff;
+        }
+
+        #homeBtn:hover {
+            background: #b89aff;
+        }
+
+        .note {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #c8b6ff;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>📅 Today's Workout</h2>
+    <p class="text-light-50">Auto-detected by weekday – Based on your fitness level</p>
+
+    <!-- TODAY CARD -->
+    <div class="today-card">
+
+        <span class="badge-day">Today: {{ today }}</span>
+
+        <h3 class="today-title mt-3">🔥 Today's Workout</h3>
+
+        <!-- BEGINNER -->
+        <div>
+            <p class="level-title">🟢 Beginner</p>
+            <ul>
+                {% for ex in beginner %}
+                <li>{{ ex }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- INTERMEDIATE -->
+        <div>
+            <p class="level-title">🟡 Intermediate</p>
+            <ul>
+                {% for ex in intermediate %}
+                <li>{{ ex }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- ADVANCED -->
+        <div>
+            <p class="level-title">🔴 Advanced</p>
+            <ul>
+                {% for ex in advanced %}
+                <li>{{ ex }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <p class="note">📌 Go to <b>Weekly Routine</b> page for full weekly exercise plans.</p>
+    </div>
+
+    <!-- NAV BUTTONS -->
+    <button onclick="history.back()" id="backBtn" class="nav-btn">⬅ Back</button>
+    <a href="/" id="homeBtn" class="nav-btn">🏠 Home</a>
+
+</body>
+
+</html>

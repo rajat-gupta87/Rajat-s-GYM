@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register — SmartGym</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --pri: #6A5ACD; --pri-d: #4d3fb7; --acc: #ff9f43; }
+        * { box-sizing: border-box; }
+        body {
+            background: radial-gradient(ellipse at 20% 60%, #1a0a3b 0%, #08051a 65%);
+            min-height: 100vh; font-family: 'Poppins', sans-serif;
+            color: #fff; padding: 40px 16px;
+        }
+        .reg-wrap { max-width: 560px; margin: 0 auto; }
+        .reg-card {
+            background: rgba(255,255,255,.05); backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,.09); border-radius: 22px;
+            padding: 38px 36px 32px;
+            box-shadow: 0 16px 60px rgba(0,0,0,.5);
+            animation: fadeUp .6s ease;
+        }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+        .reg-brand { font-size: 1.4rem; font-weight: 900; text-align: center; margin-bottom: 4px; }
+        .reg-brand span { color: var(--acc); }
+        .reg-sub { text-align: center; color: rgba(255,255,255,.4); font-size: .83rem; margin-bottom: 28px; }
+        .sect-head {
+            font-size: .72rem; font-weight: 800; letter-spacing: 1px;
+            text-transform: uppercase; color: var(--acc);
+            border-bottom: 1px solid rgba(255,159,67,.2);
+            padding-bottom: 6px; margin-bottom: 16px; margin-top: 24px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .form-label { color: #c4a9f5; font-weight: 600; font-size: .83rem; margin-bottom: 4px; }
+        .form-control, .form-select {
+            background: rgba(189,161,255,.1) !important;
+            border: 1.5px solid rgba(122,91,248,.35) !important;
+            color: #e7d8ff !important; border-radius: 10px; font-size: .9rem;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #9b7af0 !important;
+            box-shadow: 0 0 0 3px rgba(106,90,205,.22) !important;
+        }
+        .form-control::placeholder { color: rgba(231,216,255,.28) !important; }
+        .form-select option { background: #1a0a3b; color: #e7d8ff; }
+        .bmi-box {
+            background: rgba(106,90,205,.15); border: 1px solid rgba(106,90,205,.35);
+            border-radius: 12px; padding: 12px 16px; margin-top: 8px;
+            display: none;
+        }
+        .bmi-box .bmi-val { font-size: 1.6rem; font-weight: 900; color: #d7b7ff; }
+        .bmi-box .bmi-cat { font-size: .82rem; font-weight: 600; }
+        .btn-register {
+            background: linear-gradient(135deg, var(--pri), #9b6cf0);
+            color: #fff; border: none; border-radius: 12px; width: 100%;
+            padding: 13px; font-size: 1rem; font-weight: 800; margin-top: 20px;
+            box-shadow: 0 0 28px rgba(106,90,205,.5); transition: .25s; cursor: pointer;
+        }
+        .btn-register:hover { transform: translateY(-2px); }
+        a.text-link { color: #d7b7ff; font-weight: 600; text-decoration: none; }
+        a.text-link:hover { color: var(--acc); }
+        .alert-box {
+            background: rgba(220,53,69,.2); border: 1px solid rgba(220,53,69,.35);
+            border-radius: 10px; padding: 11px 14px; color: #ffadad; font-size: .87rem; margin-bottom: 14px;
+        }
+        .goal-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+        .goal-chip input[type=radio] { display: none; }
+        .goal-chip label {
+            display: block; background: rgba(255,255,255,.07);
+            border: 1.5px solid rgba(255,255,255,.12);
+            border-radius: 10px; padding: 10px 14px;
+            font-size: .82rem; font-weight: 600; cursor: pointer;
+            transition: .2s; color: rgba(255,255,255,.65);
+        }
+        .goal-chip input:checked + label {
+            background: rgba(106,90,205,.3);
+            border-color: var(--pri); color: #fff;
+        }
+        .goal-chip label:hover { border-color: rgba(255,255,255,.3); color: #fff; }
+    </style>
+</head>
+<body>
+<div class="reg-wrap">
+    <div class="reg-card">
+        <div class="reg-brand">🏋️ Smart<span>Gym</span></div>
+        <div class="reg-sub">Create your account & get your personalised plan</div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% for cat, msg in messages %}
+            <div class="alert-box"><i class="bi bi-exclamation-circle me-1"></i>{{ msg }}</div>
+          {% endfor %}
+        {% endwith %}
+
+        <form method="POST" action="/register">
+
+            <!-- ── Account ── -->
+            <div class="sect-head"><i class="bi bi-person-badge"></i> Account Info</div>
+            <div class="mb-3">
+                <label class="form-label">Full Name *</label>
+                <input type="text" name="name" class="form-control" placeholder="Rajat Sharma" required>
+            </div>
+            <div class="row g-3 mb-0">
+                <div class="col">
+                    <label class="form-label">Email *</label>
+                    <input type="email" name="email" class="form-control" placeholder="you@email.com" required>
+                </div>
+                <div class="col">
+                    <label class="form-label">Password *</label>
+                    <input type="password" name="password" class="form-control" placeholder="Min 6 chars" required minlength="6">
+                </div>
+            </div>
+
+            <!-- ── Body Stats ── -->
+            <div class="sect-head"><i class="bi bi-person-heart"></i> Body Stats</div>
+            <div class="row g-3 mb-0">
+                <div class="col-6">
+                    <label class="form-label">Age</label>
+                    <input type="number" name="age" class="form-control" placeholder="22" min="10" max="100">
+                </div>
+                <div class="col-6">
+                    <label class="form-label">Gender</label>
+                    <select name="gender" class="form-select">
+                        <option value="">Select</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <label class="form-label">Height (cm)</label>
+                    <input type="number" id="heightInput" name="height" class="form-control" placeholder="175" step="0.5" min="100" max="250" oninput="calcBMI()">
+                </div>
+                <div class="col-6">
+                    <label class="form-label">Weight (kg)</label>
+                    <input type="number" id="weightInput" name="weight" class="form-control" placeholder="70" step="0.5" min="30" max="300" oninput="calcBMI()">
+                </div>
+            </div>
+            <!-- BMI Preview -->
+            <div class="bmi-box" id="bmiBox">
+                <div class="d-flex align-items-center gap-3">
+                    <div>
+                        <div style="font-size:.72rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px;">Your BMI</div>
+                        <div class="bmi-val" id="bmiVal">—</div>
+                    </div>
+                    <div>
+                        <span class="bmi-cat" id="bmiCat"></span>
+                        <div style="font-size:.75rem;color:rgba(255,255,255,.4);margin-top:3px;">Will be stored in your profile</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Fitness Goal ── -->
+            <div class="sect-head"><i class="bi bi-bullseye"></i> Fitness Goal</div>
+            <div class="goal-chips mb-0">
+                <div class="goal-chip">
+                    <input type="radio" name="goal" id="g1" value="weight_loss">
+                    <label for="g1">🔥 Weight Loss</label>
+                </div>
+                <div class="goal-chip">
+                    <input type="radio" name="goal" id="g2" value="muscle_gain" checked>
+                    <label for="g2">💪 Muscle Gain</label>
+                </div>
+                <div class="goal-chip">
+                    <input type="radio" name="goal" id="g3" value="maintenance">
+                    <label for="g3">⚖️ Maintenance</label>
+                </div>
+            </div>
+
+            <!-- ── Training Profile ── -->
+            <div class="sect-head"><i class="bi bi-graph-up-arrow"></i> Training Profile</div>
+            <div class="row g-3">
+                <div class="col-7">
+                    <label class="form-label">Experience Level</label>
+                    <select name="experience" class="form-select">
+                        <option value="Beginner">🌱 Beginner (&lt;6 months)</option>
+                        <option value="Intermediate">⚡ Intermediate (6m–2yr)</option>
+                        <option value="Advanced">🔥 Advanced (2+ years)</option>
+                    </select>
+                </div>
+                <div class="col-5">
+                    <label class="form-label">Days/Week</label>
+                    <select name="workout_days" class="form-select">
+                        <option value="2">2 days</option>
+                        <option value="3" selected>3 days</option>
+                        <option value="4">4 days</option>
+                        <option value="5">5 days</option>
+                        <option value="6">6 days</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-register">
+                <i class="bi bi-rocket-takeoff me-2"></i>Create Account & Get My Plan
+            </button>
+        </form>
+
+        <p class="text-center mt-4" style="font-size:.87rem;color:rgba(255,255,255,.45);">
+            Already have an account? <a href="/login" class="text-link">Login here</a>
+        </p>
+        <p class="text-center mt-1" style="font-size:.78rem;">
+            <a href="/" class="text-link" style="opacity:.5;">← Back to home</a>
+        </p>
+    </div>
+</div>
+
+<script>
+function calcBMI() {
+    const h = parseFloat(document.getElementById('heightInput').value);
+    const w = parseFloat(document.getElementById('weightInput').value);
+    const box = document.getElementById('bmiBox');
+    if (h > 0 && w > 0 && h > 100) {
+        const bmi = (w / Math.pow(h/100, 2)).toFixed(1);
+        document.getElementById('bmiVal').textContent = bmi;
+        let cat = '', color = '';
+        if (bmi < 18.5)      { cat = '⬇️ Underweight'; color = '#74b9ff'; }
+        else if (bmi < 25)   { cat = '✅ Normal Weight'; color = '#55efc4'; }
+        else if (bmi < 30)   { cat = '⚠️ Overweight'; color = '#fdcb6e'; }
+        else                 { cat = '🔴 Obese'; color = '#ff7675'; }
+        document.getElementById('bmiCat').textContent = cat;
+        document.getElementById('bmiCat').style.color = color;
+        box.style.display = 'block';
+    } else {
+        box.style.display = 'none';
+    }
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

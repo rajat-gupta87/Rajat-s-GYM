@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strength Test 💥</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --pri: #6A5ACD;
+            --pri-dark: #4d3fb7;
+            --glow: rgba(160, 120, 255, .55);
+        }
+
+        body {
+            background: #0f0d18;
+            font-family: Poppins, sans-serif;
+            color: white;
+            text-align: center;
+            padding-top: 40px;
+        }
+
+        h2 {
+            color: #ffce45;
+            font-weight: 800;
+            text-shadow: 0 0 15px rgba(255, 230, 115, .45);
+        }
+
+        .box {
+            width: 480px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.07);
+            padding: 28px;
+            border-radius: 14px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 18px rgba(255, 230, 115, .35);
+            text-align: left;
+        }
+
+        input {
+            background: #b498ff !important;
+            border: 1px solid #9b71ff;
+            color: #f1e3ff;
+            font-weight: 600;
+        }
+
+        input:focus {
+            box-shadow: 0 0 14px #cbaaff;
+        }
+
+        .btn-orange {
+            background: #ffbe3b;
+            color: black;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 0 12px rgba(255, 210, 85, .55);
+        }
+
+        .btn-orange:hover {
+            background: #ffd778;
+            transform: scale(1.05);
+        }
+
+        .result-box {
+            width: 480px;
+            margin: auto;
+            margin-top: 32px;
+            background: #1b182a;
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: 0 0 18px rgba(255, 215, 90, .35);
+        }
+
+        /* THEMED BACK & HOME BUTTONS 🔥 */
+        .nav-btn {
+            position: fixed;
+            bottom: 20px;
+            padding: 10px 24px;
+            font-weight: 700;
+            border-radius: 10px;
+            font-size: 15px;
+            border: none;
+            color: white;
+            background: var(--pri);
+            text-decoration: none;
+            box-shadow: 0 0 15px var(--glow);
+            transition: .25s;
+            z-index: 999;
+        }
+
+        .nav-btn:hover {
+            background: var(--pri-dark);
+            transform: scale(1.1);
+        }
+
+        #backBtn {
+            left: 20px;
+        }
+
+        #homeBtn {
+            right: 20px;
+            background: #8d6aff;
+        }
+
+        #homeBtn:hover {
+            background: #b498ff;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h2>💥 Strength Level Test</h2>
+    <p class="text-light">Push limits → Break limits → Grow stronger 🔥</p>
+    <hr style="width:70%;margin:auto;opacity:.25;">
+
+    <form action="/strength" method="POST" class="box mt-4">
+
+        <label>Pushups (max reps)</label>
+        <input type="number" name="pushups" class="form-control mb-2" required>
+
+        <label>Squats (max reps)</label>
+        <input type="number" name="squats" class="form-control mb-2" required>
+
+        <label>Plank Hold (seconds)</label>
+        <input type="number" name="plank" class="form-control mb-3" required>
+
+        <button class="btn-orange w-100">Evaluate Strength 🔥</button>
+    </form>
+
+    {% if result %}
+    <div class="result-box mt-4">
+        <h3 class="text-warning fw-bold mb-2">Score → {{result[0]}}%</h3>
+        <h2 class="text-warning">{{result[1]}}</h2>
+
+        {% if "Beast" in result[1] %}
+        <p class="fs-4 text-danger">🔥 You are a Monster Champion!</p>
+        {% elif "Intermediate" in result[1] %}
+        <p class="fs-5 text-warning">⚡ Good progress — keep pushing!</p>
+        {% else %}
+        <p class="fs-5 text-success">🟢 Start slow — champions are made daily</p>
+        {% endif %}
+
+        <a href="/strength" class="btn btn-outline-warning mt-3 fw-bold">Try Again</a> <br>
+        <a href="/" class="btn btn-outline-light mt-2">🏠 Dashboard</a>
+    </div>
+    {% endif %}
+
+    <!-- 🔥 Final Buttons -->
+    <button onclick="history.back()" id="backBtn" class="nav-btn">⬅ Back</button>
+    <a href="/" id="homeBtn" class="nav-btn">🏠 Home</a>
+
+</body>
+
+</html>
